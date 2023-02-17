@@ -1,0 +1,2 @@
+interface Process extends Runnable {}
+
