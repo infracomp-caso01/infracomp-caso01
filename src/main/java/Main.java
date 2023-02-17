@@ -57,7 +57,7 @@ public class Main {
             Process[] processes = new Process[PROCESS_NUM];
             for (int j = 0; j < PROCESS_NUM - 1; j++)
                 //processes[j] = j == orangeID ? new Orange(buffers[i], buffers[i + 1]) : new Blue(buffers[i], buffers[i + 1]);
-                processes[j] = new Orange(buffers[i], buffers[i + 1]);
+                processes[j] = new Blue(buffers[i], buffers[i + 1]);
             processList.addAll(Arrays.asList(processes));
             orangeID = SecureUtility.nextORANGE(PROCESS_NUM);
         }
