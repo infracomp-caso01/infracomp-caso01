@@ -36,7 +36,7 @@ import java.util.Random;
             });
 
             //Main.log("🟠.Thread " + id + stage + " in TRANSFORM");
-            context.msg += "╍🟠.ThreadID" + id + "-Stage" + stage + "(" + context.counter + ")";
+            context.msg += "╍🟠.Thread" + id + "-" + stage + "(" + context.counter + ")";
             try {
                 //noinspection BusyWait
                 Thread.sleep(timeMillis);
