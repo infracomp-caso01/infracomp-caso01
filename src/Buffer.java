@@ -28,13 +28,13 @@ public class Buffer<Msg> {
     }
 
     void putBlue(Msg msg) {
-        queueBlue.add(msg);
         ++occupied;
+        queueBlue.add(msg);
     }
 
     void putOrange(Msg msg) {
-        queueOrange.add(msg);
         ++occupied;
+        queueOrange.add(msg);
     }
 
     boolean isFullBlue() {return occupied == MAX_SIZE;}

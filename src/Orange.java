@@ -64,7 +64,8 @@ import java.util.Random;
                 while (out.isFullOrange()) Thread.yield();
             }, () -> {
                 //Main.log("🟠.Thread " + id + stage + " in PRODUCE");
-                out.putOrange("🟠.Thread[" + SecureId.nextPID() + "]ID" + id + "-Stage" + stage + "(" + context.counter + ")");
+                out.putOrange(
+                        "🟠.Thread[" + SecureId.nextPID() + "]ID" + id + "-Stage" + stage + "(" + context.counter + ")");
                 ++context.counter;
             });
         }
