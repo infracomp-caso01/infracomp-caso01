@@ -1,0 +1,114 @@
+\documentclass[a4paper]{article} 
+\input{head}
+\begin{document}
+
+%-------------------------------
+%	TITLE SECTION
+%-------------------------------
+
+\fancyhead[C]{}
+\hrule \medskip % Upper rule
+\begin{minipage}{0.295\textwidth} 
+\raggedright
+\footnotesize
+\textbf{Pedro Luis Lobato Barros} \hfill\\    
+202012490\hfill\\
+p.lobato
+
+\textbf{Jaime Andres Torres Bermejo} \hfill\\   
+202014866\hfill\\
+j.torres16
+
+\textbf{Sofia Torres Ramírez} \hfill\\   
+202014872\hfill\\
+s.torres21
+
+\end{minipage}
+\begin{minipage}{0.4\textwidth} 
+\centering 
+\large 
+Caso 1\\ 
+\normalsize 
+Infraestructura Computacional - Universidad de los Andes\\ 
+\end{minipage}
+\begin{minipage}{0.295\textwidth} 
+\raggedleft
+\today\hfill\\
+\end{minipage}
+\medskip\hrule 
+\bigskip
+
+%-------------------------------
+%	CONTENTS
+%-------------------------------
+
+\section{Estructura del Proyecto}
+    
+    \subsection{UML}
+    
+    \subsection{la clase 'Main'}
+
+    La principal función de la clase 'Main', además de correr el programa,
+    es unir al resto del programa para su funcionamiento óptimo, en 'Main.java'
+    esta definida la estructura que las clases que vamos a manejar para solucionar
+    el problema.
+
+    Una de las primeras cosas que van a saltar a la vista es el uso de constantes
+    definidas como 'final' dentro de la lógica de java. con esto, pretendemos 
+    hacer que las variables acá definidas sean inmutables y no puedan ser cambiadas
+    ni por el usuario ni por ninguno de los procesos que el programa corra una vez
+    definidas. Las variables que caen dentro de este conjunto inmutable son
+
+    \begin{enumerate}
+        \item MESSAGE NUM: Define el número de mensajes a enviar.
+        \item PROCESS NUM: Define el número de procesos del programa.
+        \item BUFFER CAP: Define el limite del Buffer
+        \item BUFFER NUM: Define el número de Buffers
+        \item STAGE NUM: Define el número de etapas por las que pasarán los procesos
+    \end{enumerate}
+
+    Estas conses son luego utilizadas para la creación de los objetos
+    que serán usados en el programa, y conectará la lógica de esos
+    nuevos objetos creados. 
+
+    \subsection{Estructura de los Procesos}
+    
+    \subsection{Estructura de Input}
+    
+    \subsection{Estructura de Prints}
+    
+%------------------------------------------------
+
+\section{Pruebas del programa}
+
+\subsection{Estructura y requerimientos de prueba.}
+Este programa fue probado en el IDE integrado IntelliJ IDEA 2022.3.2, con
+el JDK Java 11 y en la consola integrada del IDE. Fue probado en Windows 10 
+2H22 y Manjaro Linux 22.10, la estructura del proyecto esta planteada con el
+sistema de Build 'Maven' y es dependiente principalmente de las librerías estandar
+de Java. Sin embargo, para conseguir los prints con símbolos integrados, la fuente
+de la consola en la cuál se compile debe ser compatible con simbolos Unicode,
+de lo contrario, solo será mostrado el código Unicode referente a los símbolos.
+
+\subsection{Pruebas}
+\subsubsection{Input}
+
+\subsubsection{Output}
+
+
+\subsubsection{Input}
+
+\subsubsection{Output}
+
+\subsubsection{Input}
+
+\subsubsection{Output}
+
+\section{Glosario}
+\paragraph{Función Lambda}
+
+\paragraph{Objeto anónimo}
+
+
+%------------------------------------------------
+\end{document}
