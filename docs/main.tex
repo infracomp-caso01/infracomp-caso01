@@ -44,7 +44,9 @@ Infraestructura Computacional - Universidad de los Andes\\
 
 \section{Estructura del Proyecto}
     
+
     \subsection{UML}
+
     Por medio de este diagrama UML se puede entender a grandes rasgos el funcionamiento del programa. Iniciando por la clase “Process” Podemos ver que esta clase extiende de “Runnable”.  Siguiendo con esta Idea, las clases “Orange”, “Blue” y “Red” al representar los diferentes procesos que puede tener el programa implementarán a la clase “Process”. Tal como lo evidencia el diagrama, las clases “Orange” y “Blue” tienen el mismo objetivo final, procesar productos. Sin embargo, su funcionamiento interno es diferente y este se especificará más adelante. Los atributos de estas clases son:  
     
     \begin{enumerate}
@@ -57,7 +59,7 @@ Infraestructura Computacional - Universidad de los Andes\\
 
     Con respecto a la clase “Buffer” podemos ver que tiene los siguientes atributos: 
     \begin{enumerate}
-        \item “MAX_SIZE”: La capacidad del buffer. 
+        \item “MAX SIZE”: La capacidad del buffer. 
 
         \item “queueOrange”: Una cola que almacena los productos/mensajes que fueron creados y modificados por procesos naranjas. 
         
@@ -75,8 +77,6 @@ Infraestructura Computacional - Universidad de los Andes\\
 
     \subsection{la clase 'Main'}
 
-    \includegraphics{uml.jpeg}
-
     La principal función de la clase 'Main', además de correr el programa,
     es unir al resto del programa para su funcionamiento óptimo, en 'Main.java'
     esta definida la estructura que las clases que vamos a manejar para solucionar
@@ -89,11 +89,11 @@ Infraestructura Computacional - Universidad de los Andes\\
     definidas. Las variables que caen dentro de este conjunto inmutable son
 
     \begin{enumerate}
-        \item texttt{MESSAGE NUM:} Define el número de mensajes a enviar.
-        \item texttt{PROCESS NUM:} Define el número de procesos del programa.
-        \item texttt{BUFFER CAP:} Define el limite del Buffer
-        \item texttt{BUFFER NUM:} Define el número de Buffers
-        \item texttt{STAGE NUM:} Define el número de etapas por las que pasarán los procesos
+        \item MESSAGE NUM: Define el número de mensajes a enviar.
+        \item PROCESS NUM: Define el número de procesos del programa.
+        \item BUFFER CAP: Define el limite del Buffer
+        \item BUFFER NUM: Define el número de Buffers
+        \item STAGE NUM: Define el número de etapas por las que pasarán los procesos
     \end{enumerate}
 
     Estas conses son luego utilizadas para la creación de los objetos
@@ -102,11 +102,11 @@ Infraestructura Computacional - Universidad de los Andes\\
 
     \subsection{Estructura de los Procesos}
         \subsubsection{Blue}
-        \includegraphics{}
+
         En la parte inicial del código se puede ver la definición de los atributos de la clase “Blue”, su método constructor y un método para darle valor al atributo “msgLimit”. 
-        \includegraphics{}
+        
         Luego de esto podemos ver el método run del proceso, en donde, si la etapa del proceso creado es igual a 0, correrá el método “runZero( )”, de lo contrario, correrá el método “runNonZero( )”. Esto se hace debido a que, si el proceso pertenece a la etapa cero, quiere decir que aun no se han creado los productos/mensajes, por ende, toca crearlos. Si la etapa es diferente de 0, ya están creados los mensajes así que el proceso debería obtenerlos del buffer de entrada. 
-        \includegraphics{}
+        
         En la primera parte del método “runNonZero()” se crea un lamda expresion y un objeto anónimo llamado context el cual tendrá dos atributos msg y counter en donde “msg” será el mensaje sacado del buffer de entrada y “counter” será el número de mensajes que se han procesado. Teniendo en cuenta esta información, se ejecutará un ciclo mientras todavía no se hayan procesado todos los mensajes azules. Luego de esto se sincroniza la cola de los mensajes azules del buffer de entrada (in) para asegurar que el recurso solo será manejado por este proceso. Mientras la cola de mensajes azules del buffer de entrada esté vacía el proceso esperará sobre esta cola hasta que otro proceso agregue un mensaje azul a esta y el proceso actual lo pueda tomar. Aquí se puede evidenciar la espera pasiva por parte de los procesos azules debido a que el proceso esperará hasta que le notifiquen, no preguntará constantemente si el buffer ya no está vacío. Cuando la cola no esté vacía, el proceso toma un mensaje, notifica esto a la cola y libera el recurso. 
 
         En esta parte del código se realiza la transformación necesaria del mensaje agregándole esta nueva etapa por la que pasó y luego el proceso se duerme por un tiempo aleatorio simulando dicha transformación. 
