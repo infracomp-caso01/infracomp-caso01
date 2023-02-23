@@ -45,8 +45,37 @@ Infraestructura Computacional - Universidad de los Andes\\
 \section{Estructura del Proyecto}
     
     \subsection{UML}
+    Por medio de este diagrama UML se puede entender a grandes rasgos el funcionamiento del programa. Iniciando por la clase “Process” Podemos ver que esta clase extiende de “Runnable”.  Siguiendo con esta Idea, las clases “Orange”, “Blue” y “Red” al representar los diferentes procesos que puede tener el programa implementarán a la clase “Process”. Tal como lo evidencia el diagrama, las clases “Orange” y “Blue” tienen el mismo objetivo final, procesar productos. Sin embargo, su funcionamiento interno es diferente y este se especificará más adelante. Los atributos de estas clases son:  
     
+    \begin{enumerate}
+        \item “msgLimit”: El número de productos o mensajes que se deben crear por cada tipo de proceso y que por ende se deben imprimir al finalizar el programa. Este atributo es estático por lo tanto está subrayado y solo se puede leer, no modificar.  
+        \item “Id”: El identificador de cada proceso creado. 
+        \item “stage”: El identificador de la etapa en la cual se encuentra el proceso creado. 
+        \item “timeMillis”: El tiempo que debe dormir el proceso para simular la modificación del mensaje/producto. 
+    \end{enumerate}
+    Estos 4 atributos son iguales tanto para el proceso azul como para el naranja. El proceso rojo no tiene los atributos “stage”, “id” y “timeMillis” debido a que solo se crea un proceso rojo, el cual no necesitaría un id para diferenciarse. Se sabe que estará en la parte final del proceso por ende no es necesario especificar su etapa y al no modificar el mensaje no necesita un tiempo durante el cual simular esta modificación. Sin embargo, tiene un atributo adicional llamado “process” el cual tiene la información de cuantos procesos están activos. 
+
+    Con respecto a la clase “Buffer” podemos ver que tiene los siguientes atributos: 
+    \begin{enumerate}
+        \item “MAX_SIZE”: La capacidad del buffer. 
+
+        \item “queueOrange”: Una cola que almacena los productos/mensajes que fueron creados y modificados por procesos naranjas. 
+        
+        \item “queueBlue”: Una cola que almacena los productos/mensajes que fueron creados y modificados por procesos azules. 
+        
+        \item “occupied”: La cantidad de productos/mensajes que hay en el buffer. 
+    \end{enumerate}
+     
+
+    Tanto el proceso naranja (Orange) como el azul (Blue) tienen dos relaciones con el Buffer. Una de estas relaciones representa el buffer de entrada, es decir, el Buffer del cual se sacan los mensajes para modificarlos. La cardinalidad de estas relaciones es de 0..1 debido a que si el proceso corresponde a la etapa 0, no existiría buffer de entrada ya que en esta etapa se crean los procesos. De lo contrario, es decir, si un proceso no pertenece al la etapa 0, siempre existirá un “Buffer in” del cual sacar los mensajes. Por otro lado, para todo proceso Azul o Naranja siempre existirá un “Buffer out” o Buffer de salida, en el cual se colocarán los mensajes ya modificados o recién creados para que un proceso de la siguiente etapa lo pueda coger y modificar. 
+
+    Sin embargo, el proceso rojo no funciona igual debido a que este proceso solo tendrá interacción con el último Buffer, del cual sacará los mensajes para luego imprimirlos. 
+
+
+
     \subsection{la clase 'Main'}
+
+    \includegraphics{uml.jpeg}
 
     La principal función de la clase 'Main', además de correr el programa,
     es unir al resto del programa para su funcionamiento óptimo, en 'Main.java'
