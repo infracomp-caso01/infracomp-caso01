@@ -101,8 +101,11 @@ Infraestructura Computacional - Universidad de los Andes\\
     nuevos objetos creados. 
 
     \subsection{Estructura de los Procesos}
-    \subsubsectionmark{Blue}
+    \subsubsection{Blue}
     En la parte inicial del código se puede ver la definición de los atributos de la clase “Blue”, su método constructor y un método para darle valor al atributo “msgLimit”. 
+    \includegraphics{}
+    Luego de esto podemos ver el método run del proceso, en donde, si la etapa del proceso creado es igual a 0, correrá el método “runZero( )”, de lo contrario, correrá el método “runNonZero( )”. Esto se hace debido a que, si el proceso pertenece a la etapa cero, quiere decir que aun no se han creado los productos/mensajes, por ende, toca crearlos. Si la etapa es diferente de 0, ya están creados los mensajes así que el proceso debería obtenerlos del buffer de entrada. 
+
     \subsection{Estructura de Input}
     
     \subsection{Estructura de Prints}
