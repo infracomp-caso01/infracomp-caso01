@@ -46,7 +46,10 @@
     \section{Estructura del Proyecto}
 
     \subsection{UML}
-
+    \begin{center}
+        \includegraphics[scale=0.5]{uml.jpeg}    
+    \end{center}
+    
     Por medio de este diagrama UML se puede entender a grandes rasgos el funcionamiento del programa.
     Iniciando por la clase \code{Process} podemos ver que esta clase extiende de \code{Runnable} en pro de seguir el lenguaje manejado en el caso.
     Siguiendo con esta idea se aprecian las clases \code{Orange}, \code{Blue} y \code{Red} que representan los diferentes procesos que puede tener el programa, para eso cada uno implementar\'a la interfaz \code{Process}.\\
@@ -114,19 +117,27 @@
     \subsection{Estructura de los Procesos}
 
     \subsubsection{Blue}
-
+    \begin{center}
+        \includegraphics[scale=0.5]{B1.jpeg}    
+    \end{center}
     En la parte inicial del c\'odigo se puede ver la definici\'on de los atributos de la clase \code{Blue}, su m\'etodo constructor y el setter para el atributo est\'atico \code{msgLimit}.
     Luego de esto podemos ver el m\'etodo run del proceso, en donde, si la etapa del proceso creado es igual a 0, correr\'a el m\'etodo \code{runZero( )}; de lo contrario, correr\'a el m\'etodo \code{runNonZero( )}.
     Esto se hace debido a que, si el proceso pertenece a la etapa cero, quiere decir que a\'un no se han producido los productos/mensajes, por ende, toca crearlos.
     Si la etapa es diferente de 0, ya est\'an generados los mensajes as\'i que el proceso deber\'ia obtenerlos del buffer de entrada.
-
+    
     \paragraph{M\'etodo \code{runZero( )}}
+    \begin{center}
+        \includegraphics[scale=0.5]{B2.jpeg}    
+    \end{center}
     En este m\'etodo se vale de un objeto an\'onimo para poder interactuar adecuadamente con la expresi\'on lambda que se encuentra m\'as adelante, dicho objeto contiene al atributo \code{counter} que servir\'a para saber cuando se ha llegado al l\'imite de los mensajes con los que debe interactuar el proceso.
     Prosiguiendo se destaca un while que verifica lo mencionado en la explicaci\'on anterior relacionada al l\'imite de mensajes para estar inmediatamente continuado por un m\'etodo que se vale de la expresi\'on lambda o funci\'on an\'onima.
     (La forma en que se maneja ser\'a explicada m\'as adelante).
     Siguiendo se encuentra la parte del c\'odigo encargada de asignar la espera pasiva para los procesos azules y la creaci\'on de los productos mientras haya espacio para finalizar ubicando el mensaje en el buz\'on, aumentando el contador de \code{counter} y notificando a alg\'uno de los hilos que interact\'uan con ese buz\'on.
-
+    \pagebreak
     \paragraph{M\'etodo \code{runNonZero( )}}
+    \begin{center}
+        \includegraphics[scale=0.5]{B3.jpeg}    
+    \end{center}
     Por otra parte, este m\'etodo tiene un comportamiento similar al anterior:
     Para la secci\'on de obtener hay una variaci\'on representada sobre \textbf{que} objeto se aplica la sincronizaci\'on y la condici\'on ahora es para comprobar si est\'a vac\'io.\\
     Por otra parte, la secci\'on de poner solo presenta la variaci\'on que pone el mensaje ya transformado en lugar de uno creado.
@@ -138,10 +149,18 @@
     Entre ambas secciones mencionadas se ejecuta la transformaci\'on necesaria del mensaje agreg\'andole esta nueva etapa por la que pas\'o y luego el proceso se duerme por un tiempo aleatorio simulando el tiempo que toma dicha transformaci\'on.
 
     \subsubsection{Orange}
+    
+    \begin{center}
+        \includegraphics[scale=0.5]{N0.jpeg}    
+    \end{center}
+
     En resumen se sigue la estructura del azul, pero con la variaci\'on que en la secci\'on de la expresi\'on lambda ahora usa dos fragmentos de c\'odigo para separar la parte no sincronizada de la sincronizada (Mejor explicado en la secci\'on dedicada a la clase \code{Buffer}).\\
     Ahora ahondando m\'as: En la parte inicial del c\'odigo se puede ver la definici\'on de los atributos de la clase Orange, su m\'etodo constructor y un m\'etodo para darle valor al atributo \code{msgLimit}.
     Luego de esto podemos ver el m\'etodo run del proceso en donde, si la etapa del proceso creado es igual a 0, correr\'a el m\'etodo \code{runZero( )}, de lo contrario correr\'a el m\'etodo \code{runNonZero( )}. Esto se hace debido a que, si el proceso pertenece a la etapa cero, quiere decir que a\'un no se han creado los productos/mensajes, por ende, toca crearlos. Si la etapa es diferente de 0, ya est\'an creados los mensajes as\'i que el proceso tendr\'ia que obtenerlos del buffer de entrada.
 
+    \begin{center}
+        \includegraphics[scale=0.5]{N1.jpeg}    
+    \end{center}
     En la primera parte del m\'etodo \code{runNonZero( )} se crea un objeto an\'onimo \code{context} el cu\'al tendr\'a dos atributos \code{msg} y \code{counter}, en donde \code{msg} ser\'a el mensaje sacado del buffer de entrada y \code{counter} ser\'a el n\'umero de mensajes que se han procesado.
     Teniendo en cuenta esta informaci\'on, luego se ejecutar\'a un ciclo mientras todav\'ia no se hayan procesado todos los mensajes azules.
     Siguiente a esto se llama a la m\'etodo \code{in.synchronizedOrange( )} la cu\'al permite la distinci\'on entre bloques, en el primer bloque de instrucciones a\'un no se sincroniza respecto a la cola de mensajes naranjas del buffer, mientras que en el segundo s\'i exista esta sincronizaci\'on.
@@ -157,12 +176,19 @@
     El primer bloque de este m\'etodo ser\'a ejecutar un ciclo en donde si la cola de mensajes naranjas del buffer de salida est\'a llena, se hace \code{Thread.yield( )} en donde el proceso naranja ceder\'a el procesador y lo volver\'a a solicitar inmediatamente hasta que la cola ya no est\'e llena.
     Luego, en el segundo bloque de en el cual se sincronizar\'a la cola de mensajes naranjas del buffer de salida, cuando la cola no est\'e llena se agregar\'a el mensaje modificado y el contador de mensajes procesados aumentar\'a en uno.\\
 
+
+    \begin{center}
+        \includegraphics[scale=0.5]{N2.jpeg}    
+    \end{center}
     Por \'ultimo se tiene el m\'etodo \code{runZero( )} en donde se crea un objeto an\'onimo \code{context} el cual tiene un atributo llamado \code{counter} que cuenta la cantidad de productos/mensajes creados.
     Luego de esto se ejecuta un ciclo mientras el n\'umero de mensajes producidos sea menor al n\'umero de mensajes a crear.
     Mientras esto suceda se har\'a uso del m\'etodo \code{out.synchronizedOrange( )} (Con su funcionamiento ya explicado previamente) en donde el primer bloque de la funci\'on se evaluar\'a si la cola de mensajes naranjas del buffer de salida est\'a llena, de ser as\'i se ejecuta la instrucci\'on \code{yield} hasta que la cola de mensajes naranjas no est\'e llena.
     En el segundo bloque de la funci\'on, cuando esta cola ya no est\'a llena, se crea el mensaje, se agrega a la cola y luego se aumenta el contador de mensajes creados en uno.
 
     \subsubsection{Red}
+    \begin{center}
+        \includegraphics[scale=0.5]{R0.jpeg}    
+    \end{center}
     En la parte inicial del c\'odigo se puede ver la definici\'on de los atributos de la clase Red, y los m\'etodos para darle valor a estos atributos.
     Adicionalmente, se puede la inicializaci\'on del m\'etodo \code{run( )} y dentro \'el la creaci\'on de variables de control como \code{msg} el cual es un arreglo de tama\~no igual al n\'umero total de mensajes creados.
     Tambi\'en se crean las variables \code{sentinelO} y \code{sentinelB} las cuales aseguran que no se lean m\'as de \code{msgLimit} mensajes provenientes de procesos naranjas y azules correspondientemente.\\
@@ -175,16 +201,41 @@
     Esto mismo sucede en el siguiente ciclo dedicado a los procesos azules, pero en su lugar se verifica que la cantidad de procesos corriendo sea mayor a 1 (\code{process > 1}), en donde en ese caso se sabr\'a que al menos uno de los procesos corriendo es azul, y se ejecutan las mismas instrucciones mencionadas anteriormente.\\
     Cabe a\~nadir que en ambos ciclos hay una l\'inea que crea un marco el cual delimita los mensajes modificados finales que mostrar\'an al usuario (Decisi\'on tomada con fines est\'eticos).\\
 
+
+    \begin{center}
+        \includegraphics[scale=0.5]{R2.jpeg}    
+    \end{center}
     Por \'ultimo, el m\'etodo \code{between( String s )} permite encontrar el id del mensaje que entra por par\'ametro, esto se hacer por medio del m\'etodo substring para extraer una subcadena que comienza justo despu\'es del corchete de apertura y termina justo antes del corchete de cierre.
     (Esto es permitido de acuerdo a la estructura escogida para las transformaciones y producciones de los diversos mensajes).
     Esta subcadena se convierte en un n\'umero entero utilizando el m\'etodo \code{Integer.parseInt( String s )} y se devuelve como resultado.\\
 
     \subsection{Estructura de Input}
+    Tan pronto el usuario corra el programa la consola imprimirá estos tres mensajes secuencialmente: 
+    \begin{center}
+        \includegraphics[scale=0.5]{I0.jpeg}    
+    \end{center}
+    Primero deberá ingresar el tamaño de los buffers, este número deber ser entero y mayor a 0. En este caso es 5. 
+    \pagebreak
+    \begin{center}
+        \includegraphics[scale=0.5]{I1.jpeg}    
+    \end{center}
+    Luego deberá ingresar el número de procesos por etapa, de los cuales se sabe que uno es naranja y los restantes son azules. Este número deber ser entero y mayor a 0. En este caso un proceso sería naranja y cuatro serían azules. 
+    \begin{center}
+        \includegraphics[scale=0.5]{I2.jpeg}    
+    \end{center}
+    Por último, debe seleccionar la cantidad de mensajes que desea que se produzcan por cada tipo de proceso, este número deber ser entero y mayor a 0. En este caso se producirían 5 mensajes naranjas y 5 azules. 
+
+    Si se desea, también se podría modificar el número de etapas que tiene el programa, sin embargo, por default el número de etapas se estableció como 3. 
 
     \subsection{Estructura de Prints}
     Al ingresar correctamente los par\'ametros, el programa retornar\'a una estructura de mensajes similar a esta, en donde la ``R'' impresa al inicio significa que por medio del proceso rojo se imprimieron los mensajes.\\
-
+    \begin{center}
+        \includegraphics[scale=0.5]{P1.jpeg}    
+    \end{center}
     Ahora entendiendo las partes de cada mensaje:
+    \begin{center}
+        \includegraphics[scale=0.5]{P2.jpeg}    
+    \end{center}
     \begin{itemize}
         \item[] Las letras encerradas en c\'irculos amarillos indican el color del proceso por el que pas\'o cada mensaje, si el proceso era azul, la letra representada en el mensaje ser\'a ``B''.\\
         Si el proceso era naranja la letra representada pasa a ser la ``O''.
