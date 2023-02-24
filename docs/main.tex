@@ -1,4 +1,4 @@
-\documentclass[a4paper]{article} 
+\documentclass[a4paper]{article}
 \input{head}
 \begin{document}
 
@@ -6,193 +6,228 @@
 %	TITLE SECTION
 %-------------------------------
 
-\fancyhead[C]{}
-\hrule \medskip % Upper rule
-\begin{minipage}{0.295\textwidth} 
-\raggedright
-\footnotesize
-\textbf{Pedro Luis Lobato Barros} \hfill\\    
-202012490\hfill\\
-p.lobato
+    \fancyhead[C]{}
+    \hrule \medskip % Upper rule
+    \begin{minipage}{0.295\textwidth}
+        \raggedright
+        \footnotesize
+        \textbf{Pedro Luis Lobato Barros} \hfill\\
+        202012490\hfill\\
+        p.lobato
 
-\textbf{Jaime Andres Torres Bermejo} \hfill\\   
-202014866\hfill\\
-j.torres16
+        \textbf{Jaime Andres Torres Bermejo} \hfill\\
+        202014866\hfill\\
+        j.torres16
 
-\textbf{Sofia Torres Ramírez} \hfill\\   
-202014872\hfill\\
-s.torres21
+        \textbf{Sofia Torres Ram\'irez} \hfill\\
+        202014872\hfill\\
+        s.torres21
 
-\end{minipage}
-\begin{minipage}{0.4\textwidth} 
-\centering 
-\large 
-Caso 1\\ 
-\normalsize 
-Infraestructura Computacional - Universidad de los Andes\\ 
-\end{minipage}
-\begin{minipage}{0.295\textwidth} 
-\raggedleft
-\today\hfill\\
-\end{minipage}
-\medskip\hrule 
-\bigskip
+    \end{minipage}
+    \begin{minipage}{0.4\textwidth}
+        \centering
+        \large
+        Caso 1\\
+        \normalsize
+        Infraestructura Computacional - Universidad de los Andes\\
+    \end{minipage}
+    \begin{minipage}{0.295\textwidth}
+        \raggedleft
+        \today\hfill\\
+    \end{minipage}
+    \medskip\hrule
+    \bigskip
 
 %-------------------------------
 %	CONTENTS
 %-------------------------------
 
-\section{Estructura del Proyecto}
-    
+
+    \section{Estructura del Proyecto}
 
     \subsection{UML}
 
-    Por medio de este diagrama UML se puede entender a grandes rasgos el funcionamiento del programa. Iniciando por la clase “Process” Podemos ver que esta clase extiende de “Runnable”.  Siguiendo con esta Idea, las clases “Orange”, “Blue” y “Red” al representar los diferentes procesos que puede tener el programa implementarán a la clase “Process”. Tal como lo evidencia el diagrama, las clases “Orange” y “Blue” tienen el mismo objetivo final, procesar productos. Sin embargo, su funcionamiento interno es diferente y este se especificará más adelante. Los atributos de estas clases son:  
-    
-    \begin{enumerate}
-        \item “msgLimit”: El número de productos o mensajes que se deben crear por cada tipo de proceso y que por ende se deben imprimir al finalizar el programa. Este atributo es estático por lo tanto está subrayado y solo se puede leer, no modificar.  
-        \item “Id”: El identificador de cada proceso creado. 
-        \item “stage”: El identificador de la etapa en la cual se encuentra el proceso creado. 
-        \item “timeMillis”: El tiempo que debe dormir el proceso para simular la modificación del mensaje/producto. 
-    \end{enumerate}
-    Estos 4 atributos son iguales tanto para el proceso azul como para el naranja. El proceso rojo no tiene los atributos “stage”, “id” y “timeMillis” debido a que solo se crea un proceso rojo, el cual no necesitaría un id para diferenciarse. Se sabe que estará en la parte final del proceso por ende no es necesario especificar su etapa y al no modificar el mensaje no necesita un tiempo durante el cual simular esta modificación. Sin embargo, tiene un atributo adicional llamado “process” el cual tiene la información de cuantos procesos están activos. 
+    Por medio de este diagrama UML se puede entender a grandes rasgos el funcionamiento del programa.
+    Iniciando por la clase \code{Process} podemos ver que esta clase extiende de \code{Runnable} en pro de seguir el lenguaje manejado en el caso.
+    Siguiendo con esta idea se aprecian las clases \code{Orange}, \code{Blue} y \code{Red} que representan los diferentes procesos que puede tener el programa, para eso cada uno implementar\'a la interfaz \code{Process}.\\
+    Tal como lo evidencia el diagrama, las clases que implementan a \code{Process} tienen el objetivo de interactuar con procesos (Creando, transformando o envi\'andolos).
+    Sin embargo, su funcionamiento interno es diferente y este ser\'a especificado en la secci\'on 1.3.\\
+    Los atributos que los tipos de procesos comparten son:
+    \begin{itemize}
+        \item \code{String msgLimit}: El n\'umero de productos o mensajes que se deben crear por cada tipo de proceso y que por ende se deben imprimir al finalizar el programa.
+        Este atributo es est\'atico, por lo tanto, est\'a subrayado.
+        \item \code{int id}: El identificador de cada proceso creado.*
+        \item \code{int stage}: El identificador de la etapa en la cual se encuentra el proceso creado.*
+        \item \code{long timeMillis}: El tiempo que debe dormir el proceso para simular la modificaci\'on del mensaje/producto.*
+        \item \code{Buffer in}: El buz\'on de entrada del proceso (explicado m\'as adelante).
+        \item \code{Buffer out}: El buzo\'on de salida del proceso (explicado m\'as adelante).*
+        \item[\textbullet] \code{int process}: La cantidad de procesos por etapa.
+    \end{itemize}
+    \small{* \code{Red} no posee estos atributos marcados por su posici\'on al final del todo y por el hecho que no necesita transformar el mensaje.}\\
+    \small{\textbullet \code{Red} es el \'unico tipo de proceso con este atributo; atributo necesario para saber cuando finaliza la ejecuci\'on.}
 
-    Con respecto a la clase “Buffer” podemos ver que tiene los siguientes atributos: 
-    \begin{enumerate}
-        \item “MAX SIZE”: La capacidad del buffer. 
+    Con respecto a la clase \code{Buffer} podemos ver que tiene los siguientes atributos:
+    \begin{itemize}
+        \item \code{int MAX\_SIZE}: La capacidad del buffer.
+        \item \code{Queue queueOrange}: Una cola que almacena los productos/mensajes que fueron creados y modificados por procesos naranjas.
+        \item \code{Queue queueBlue}: Una cola que almacena los productos/mensajes que fueron creados y modificados por procesos azules.
+        \item \code{int occupied}: La cantidad de productos/mensajes que hay en el buffer.
+    \end{itemize}
 
-        \item “queueOrange”: Una cola que almacena los productos/mensajes que fueron creados y modificados por procesos naranjas. 
-        
-        \item “queueBlue”: Una cola que almacena los productos/mensajes que fueron creados y modificados por procesos azules. 
-        
-        \item “occupied”: La cantidad de productos/mensajes que hay en el buffer. 
-    \end{enumerate}
-     
+    Tanto el proceso naranja (Orange) como el azul (Blue) tienen dos relaciones con el Buffer.
+    El hecho que la relaci\'on con el buz\'on de entrada posea una cardinalidad de 0..1 est\'a relacionado a la etapa del proceso en si, si se es la etapa inicial no hay producto que ``sacar'' pero si un mensaje que producir.
+    Para el resto de etapas ya hay un producto que ``sacar''.\\
+    Por otro lado, para todo proceso azul o naranja siempre existir\'a un buz\'on de salida en el cual se colocan los mensajes ya modificados o reci\'en generados para que un proceso de la siguiente etapa pueda interactuar con el producto.\\
+    Sin embargo, el proceso rojo no funciona igual debido a que este proceso solo tendr\'a interacci\'on con el \'ultimo buz\'on, del cual sacar\'a la totalidad de mensajes para luego imprimirlos.
 
-    Tanto el proceso naranja (Orange) como el azul (Blue) tienen dos relaciones con el Buffer. Una de estas relaciones representa el buffer de entrada, es decir, el Buffer del cual se sacan los mensajes para modificarlos. La cardinalidad de estas relaciones es de 0..1 debido a que si el proceso corresponde a la etapa 0, no existiría buffer de entrada ya que en esta etapa se crean los procesos. De lo contrario, es decir, si un proceso no pertenece al la etapa 0, siempre existirá un “Buffer in” del cual sacar los mensajes. Por otro lado, para todo proceso Azul o Naranja siempre existirá un “Buffer out” o Buffer de salida, en el cual se colocarán los mensajes ya modificados o recién creados para que un proceso de la siguiente etapa lo pueda coger y modificar. 
+    \subsection{Main.java}
 
-    Sin embargo, el proceso rojo no funciona igual debido a que este proceso solo tendrá interacción con el último Buffer, del cual sacará los mensajes para luego imprimirlos. 
+    \subsubsection{La interfaz \code{Process}}
+    Su \'unico objetivo es el de estipular que los otros tipos de procesos son\ldots Procesos, en otras palabras es una decisi\'on tomada para que se apegue al lenguaje del caso.
 
+    \subsubsection{La clase \code{SecureId}}
+    Su objetivo es el de otorgar las ids necesarias para seguir el proceso de los mensajes y procesos.
+    Para cumplir esa funci\'on est\'an sus atributos est\'aticos:
+    \begin{itemize}
+        \item \code{int threadSeq}: Para identificar a los hilos (procesos).
+        \item \code{int productSeq}: Para identificar a los mensajes.
+    \end{itemize}
 
+    \subsubsection{La clase \code{Main}}
+    La principal funci\'ion de la clase \code{Main}, adem\'as de correr el programa,
+    es preparar al resto del programa para su funcionamiento \'optimo.\\
 
-    \subsection{la clase 'Main'}
+    Una de las primeras cosas que van a saltar a la vista es el uso de variables
+    definidas con el estado de \code{final} dentro de la propia l\'ogica de java.
+    Con esto, se pretende hacer que las variables definidas sean inmutables y no puedan ser alteradas una vez definidas ni por el usuario ni por ninguno de los procesos que el programa corra.
+    Las variables que caen dentro de este conjunto inmutable son:
+    \begin{itemize}
+        \item \code{int MESSAGE\_NUM}: Define el n\'umero de mensajes a enviar.
+        \item \code{int PROCESS\_NUM}: Define el n\'umero de procesos del programa.
+        \item \code{int BUFFER\_CAP}: Define el l\'imite del Buffer
+        \item \code{int BUFFER\_NUM}: Define el n\'umero de Buffers
+        \item \code{int STAGE\_NUM}: Define el n\'umero de etapas por las que pasar\'an los procesos
+    \end{itemize}
 
-    La principal función de la clase 'Main', además de correr el programa,
-    es unir al resto del programa para su funcionamiento óptimo, en 'Main.java'
-    esta definida la estructura que las clases que vamos a manejar para solucionar
-    el problema.
-
-    Una de las primeras cosas que van a saltar a la vista es el uso de constantes
-    definidas como 'final' dentro de la lógica de java. con esto, pretendemos 
-    hacer que las variables acá definidas sean inmutables y no puedan ser cambiadas
-    ni por el usuario ni por ninguno de los procesos que el programa corra una vez
-    definidas. Las variables que caen dentro de este conjunto inmutable son
-
-    \begin{enumerate}
-        \item MESSAGE NUM: Define el número de mensajes a enviar.
-        \item PROCESS NUM: Define el número de procesos del programa.
-        \item BUFFER CAP: Define el limite del Buffer
-        \item BUFFER NUM: Define el número de Buffers
-        \item STAGE NUM: Define el número de etapas por las que pasarán los procesos
-    \end{enumerate}
-
-    Estas conses son luego utilizadas para la creación de los objetos
-    que serán usados en el programa, y conectará la lógica de esos
-    nuevos objetos creados. 
+    Estas constantes son luego utilizadas para la creaci\'on de los objetos que ser\'an usados en el programa, y conectar\'a la l\'ogica de esos nuevos objetos creados.
 
     \subsection{Estructura de los Procesos}
-        \subsubsection{Blue}
 
-        En la parte inicial del código se puede ver la definición de los atributos de la clase “Blue”, su método constructor y un método para darle valor al atributo “msgLimit”. 
-        
-        Luego de esto podemos ver el método run del proceso, en donde, si la etapa del proceso creado es igual a 0, correrá el método “runZero( )”, de lo contrario, correrá el método “runNonZero( )”. Esto se hace debido a que, si el proceso pertenece a la etapa cero, quiere decir que aun no se han creado los productos/mensajes, por ende, toca crearlos. Si la etapa es diferente de 0, ya están creados los mensajes así que el proceso debería obtenerlos del buffer de entrada. 
-        
-        En la primera parte del método “runNonZero()” se crea un lamda expresion y un objeto anónimo llamado context el cual tendrá dos atributos msg y counter en donde “msg” será el mensaje sacado del buffer de entrada y “counter” será el número de mensajes que se han procesado. Teniendo en cuenta esta información, se ejecutará un ciclo mientras todavía no se hayan procesado todos los mensajes azules. Luego de esto se sincroniza la cola de los mensajes azules del buffer de entrada (in) para asegurar que el recurso solo será manejado por este proceso. Mientras la cola de mensajes azules del buffer de entrada esté vacía el proceso esperará sobre esta cola hasta que otro proceso agregue un mensaje azul a esta y el proceso actual lo pueda tomar. Aquí se puede evidenciar la espera pasiva por parte de los procesos azules debido a que el proceso esperará hasta que le notifiquen, no preguntará constantemente si el buffer ya no está vacío. Cuando la cola no esté vacía, el proceso toma un mensaje, notifica esto a la cola y libera el recurso. 
+    \subsubsection{Blue}
 
-        En esta parte del código se realiza la transformación necesaria del mensaje agregándole esta nueva etapa por la que pasó y luego el proceso se duerme por un tiempo aleatorio simulando dicha transformación. 
+    En la parte inicial del c\'odigo se puede ver la definici\'on de los atributos de la clase \code{Blue}, su m\'etodo constructor y el setter para el atributo est\'atico \code{msgLimit}.
+    Luego de esto podemos ver el m\'etodo run del proceso, en donde, si la etapa del proceso creado es igual a 0, correr\'a el m\'etodo \code{runZero( )}; de lo contrario, correr\'a el m\'etodo \code{runNonZero( )}.
+    Esto se hace debido a que, si el proceso pertenece a la etapa cero, quiere decir que a\'un no se han producido los productos/mensajes, por ende, toca crearlos.
+    Si la etapa es diferente de 0, ya est\'an generados los mensajes as\'i que el proceso deber\'ia obtenerlos del buffer de entrada.
 
-        Luego de modificar el mensaje es necesario agregarlo al buffer de salida (out), debido a esto, primero se sincroniza el buffer para garantizar la obtención del recurso y no leer datos inconsistentes. Luego, se ejecuta un ciclo en donde, si la cola de mensajes azules del buffer de salida está lleno, se notifica que se está intentando agregar un nuevo mensaje a la cola y luego espera a que haya espacio en ella para poder agregar el mensaje. Cuando la cola no está llena se agregará el mensaje modificado y el contador de mensajes procesados aumenta en uno. Luego de esto, se notifica a todos los que estén esperando sobre esta cola por si algún proceso de la siguiente etapa estaba esperando por él. No se realiza un “notify( )” debido a que es posible que se notifique a un proceso que ya halla terminado de procesar sus mensajes. 
+    \paragraph{M\'etodo \code{runZero( )}}
+    En este m\'etodo se vale de un objeto an\'onimo para poder interactuar adecuadamente con la expresi\'on lambda que se encuentra m\'as adelante, dicho objeto contiene al atributo \code{counter} que servir\'a para saber cuando se ha llegado al l\'imite de los mensajes con los que debe interactuar el proceso.
+    Prosiguiendo se destaca un while que verifica lo mencionado en la explicaci\'on anterior relacionada al l\'imite de mensajes para estar inmediatamente continuado por un m\'etodo que se vale de la expresi\'on lambda o funci\'on an\'onima.
+    (La forma en que se maneja ser\'a explicada m\'as adelante).
+    Siguiendo se encuentra la parte del c\'odigo encargada de asignar la espera pasiva para los procesos azules y la creaci\'on de los productos mientras haya espacio para finalizar ubicando el mensaje en el buz\'on, aumentando el contador de \code{counter} y notificando a alg\'uno de los hilos que interact\'uan con ese buz\'on.
 
-        Por último se tiene la función “runZero( )” en donde se crea una lamda expresion u objeto anónimo llamado “context” el cual tiene un atributo llamado “counter” que cuenta la cantidad de productos/mensajes creados. Luego de esto se ejecuta un ciclo mientras el número de mensajes creados sea menor al número de mensajes a crear. Mientras esto suceda se sincroniza la cola de mensajes azules del buffer de salida de la etapa 0 (el cual sería el primer buffer) para garantizar la obtención del recurso. Dentro de esta sincronización se consulta si la cola de mensajes azules está llena, de ser así el proceso espera sobre esta cola hasta que ya no esté llena. Cuando esta cola no está llena, se crea el mensaje y se agrega, luego se aumenta el contador de mensajes creados y se notifica a la cola de mensajes azules del buffer de salida que se agregó el mensaje por si algún proceso de la etapa siguiente estaba esperando por él. 
-        
-        \subsubsection{Orange}
-        En la parte inicial del código se puede ver la definición de los atributos de la clase Orange, su método constructor y un método para darle valor al atributo “msgLimit”. 
+    \paragraph{M\'etodo \code{runNonZero( )}}
+    Por otra parte, este m\'etodo tiene un comportamiento similar al anterior:
+    Para la secci\'on de obtener hay una variaci\'on representada sobre \textbf{que} objeto se aplica la sincronizaci\'on y la condici\'on ahora es para comprobar si est\'a vac\'io.\\
+    Por otra parte, la secci\'on de poner solo presenta la variaci\'on que pone el mensaje ya transformado en lugar de uno creado.
+    Aclarando, se ejecuta un ciclo en donde, si la cola de mensajes azules del buffer de salida est\'a lleno, se notifica que se est\'a intentando agregar un nuevo mensaje a la cola y luego espera a que haya espacio en ella para poder agregar el mensaje.
+    Cuando la cola no est\'a llena se agregar\'a el mensaje modificado y el contador de mensajes procesados aumenta en uno.
+    Luego de esto, se notifica a todos los que est\'en esperando sobre esta cola por si alg\'un proceso de la siguiente etapa estaba esperando por \'el.
+    No se realiza un \code{notify( )} debido a que es posible que se notifique a un proceso que ya haya terminado de procesar sus mensajes.\\
+    Nota: Para cumplir lo anterior se sigue valiendo de la expresi\'on lambda.\\
+    Entre ambas secciones mencionadas se ejecuta la transformaci\'on necesaria del mensaje agreg\'andole esta nueva etapa por la que pas\'o y luego el proceso se duerme por un tiempo aleatorio simulando el tiempo que toma dicha transformaci\'on.
 
-        Luego de esto podemos ver el método run del proceso en donde, si la etapa del proceso creado es igual a 0, correrá el método “runZero( )”, de lo contrario correrá el método “runNonZero( )”. Esto se hace debido a que, si el proceso pertenece a la etapa cero, quiere decir que aún no se han creado los productos/mensajes, por ende, toca crearlos. Si la etapa es diferente de 0, ya están creados los mensajes así que el proceso tendría que obtenerlos del buffer de entrada. 
+    \subsubsection{Orange}
+    En resumen se sigue la estructura del azul, pero con la variaci\'on que en la secci\'on de la expresi\'on lambda ahora usa dos fragmentos de c\'odigo para separar la parte no sincronizada de la sincronizada (Mejor explicado en la secci\'on dedicada a la clase \code{Buffer}).\\
+    Ahora ahondando m\'as: En la parte inicial del c\'odigo se puede ver la definici\'on de los atributos de la clase Orange, su m\'etodo constructor y un m\'etodo para darle valor al atributo \code{msgLimit}.
+    Luego de esto podemos ver el m\'etodo run del proceso en donde, si la etapa del proceso creado es igual a 0, correr\'a el m\'etodo \code{runZero( )}, de lo contrario correr\'a el m\'etodo \code{runNonZero( )}. Esto se hace debido a que, si el proceso pertenece a la etapa cero, quiere decir que a\'un no se han creado los productos/mensajes, por ende, toca crearlos. Si la etapa es diferente de 0, ya est\'an creados los mensajes as\'i que el proceso tendr\'ia que obtenerlos del buffer de entrada.
 
-        En la primera parte del método “runNonZero se crea un lamda expresion u objeto anónimo llamado “context” el cual tendrá dos atributos “msg” y “counter”, en donde “msg” será el mensaje sacado del buffer de entrada y “counter” será el número de mensajes que se han procesado. Teniendo en cuenta esta información, luego se ejecutará un ciclo mientras todavía no se hallan procesado todos los mensajes azules. Siguiente a esto se llama a la función lamda “in.synchronizedOrange( )” la cual permite que en el primer bloque de instrucciones aún no se halla sincronizado la cola de mensajes naranjas del buffer de entrada pero en el segundo sí exista esta sincronización. En el primer bloque se evalúa si la cola de mensajes naranjas está vacía. Si esto es cierto, se ejecuta la instrucción “Thread.yield( )” la cual generará que el proceso ceda el procesador y lo vuelva a solicitar inmediatamente para volver a consultar lo mismo hasta que ya no esté vacía. Es aquí en donde se puede evidenciar el comportamiento de espera semiactiva por parte del proceso naranja y también se identifica la importancia de dejar la instrucción “Thread.yield( )” por fuera de la sincronización del recurso para no generar ciclos infinitos. Cuando la cola de mensajes naranjas ya no está vacía se ejecuta el segundo bloque del método in.synchronizedOrange( ) lo que quiere decir que en esta parte del código sí se estará sincronizando la cola de mensajes naranjas. En esta parte del código se tomará un mensaje de la cola de mensajes naranjas y se liberará el recurso. Es decir, ya no se sincroniza la cola. 
+    En la primera parte del m\'etodo \code{runNonZero( )} se crea un objeto an\'onimo \code{context} el cu\'al tendr\'a dos atributos \code{msg} y \code{counter}, en donde \code{msg} ser\'a el mensaje sacado del buffer de entrada y \code{counter} ser\'a el n\'umero de mensajes que se han procesado.
+    Teniendo en cuenta esta informaci\'on, luego se ejecutar\'a un ciclo mientras todav\'ia no se hayan procesado todos los mensajes azules.
+    Siguiente a esto se llama a la m\'etodo \code{in.synchronizedOrange( )} la cu\'al permite la distinci\'on entre bloques, en el primer bloque de instrucciones a\'un no se sincroniza respecto a la cola de mensajes naranjas del buffer, mientras que en el segundo s\'i exista esta sincronizaci\'on.
+    En el primer bloque se eval\'ua si la cola de mensajes naranjas est\'a vac\'ia.
+    Si esto es cierto, se ejecuta la instrucci\'on \code{Thread.yield( )} la cual generar\'a que el proceso ceda el procesador y lo vuelva a solicitar inmediatamente para volver a consultar hasta que ya no est\'e vac\'ia.
+    Es aqu\'i en donde se puede evidenciar el comportamiento de espera semi-activa por parte del proceso naranja y tambi\'en se identifica la importancia de dejar la instrucci\'on del \code{yield} por fuera de la sincronizaci\'on del recurso para no generar un \texttt{deadlock}.
+    Cuando la cola de mensajes naranjas ya no est\'a vac\'ia se ejecuta el segundo bloque del m\'etodo \code{in.synchronizedOrange( )} lo que quiere decir que en esta parte del c\'odigo s\'i se estar\'a sincronizando respecto a la cola de mensajes naranjas.
+    En esta parte del c\'odigo se tomar\'a un mensaje de la cola de mensajes naranjas para luego liberar al recurso.
+    Es decir, ya no se sincroniza la cola.\\
 
-        En esta parte del código se realiza la transformación necesaria del mensaje agregándole esta nueva etapa por la que pasó y luego el proceso se duerme por un tiempo aleatorio simulando dicha transformación. 
+    En la siguiente parte del c\'odigo se realiza la transformaci\'on necesaria del mensaje agreg\'andole esta nueva etapa por la que pas\'o y luego el proceso se duerme por un tiempo aleatorio simulando dicha transformaci\'on.
+    Luego de modificar el mensaje es necesario agregarlo al buffer de salida (out) debido a esto, primero se llama a la funci\'on \code{out.synchronizedOrange( )} (Cuyo funcionamiento ya ha sido explicado).
+    El primer bloque de este m\'etodo ser\'a ejecutar un ciclo en donde si la cola de mensajes naranjas del buffer de salida est\'a llena, se hace \code{Thread.yield( )} en donde el proceso naranja ceder\'a el procesador y lo volver\'a a solicitar inmediatamente hasta que la cola ya no est\'e llena.
+    Luego, en el segundo bloque de en el cual se sincronizar\'a la cola de mensajes naranjas del buffer de salida, cuando la cola no est\'e llena se agregar\'a el mensaje modificado y el contador de mensajes procesados aumentar\'a en uno.\\
 
-        Luego de modificar el mensaje es necesario agregarlo al buffer de salida (out) debido a esto, primero se llama a la función “out.synchronizedOrange( )” (Su funcionamiento ya se explicó anteriormente). El primer bloque de este método será  ejecutar un ciclo en donde si la cola de mensajes naranjas del buffer de salida está llena, se hace “Thread.yield( )” en donde el proceso naranja cederá el procesador y lo volverá a solicitar inmediatamente hasta que la cola ya no esté llena. Luego, en el segundo bloque de la función “out.synchronizedOrange( )”, en el cual se sincronizará la cola de mensajes naranjas del buffer de salida, cuando la cola no este llena se agregará el mensaje modificado y el contador de mensajes procesados aumentará en uno.  
+    Por \'ultimo se tiene el m\'etodo \code{runZero( )} en donde se crea un objeto an\'onimo \code{context} el cual tiene un atributo llamado \code{counter} que cuenta la cantidad de productos/mensajes creados.
+    Luego de esto se ejecuta un ciclo mientras el n\'umero de mensajes producidos sea menor al n\'umero de mensajes a crear.
+    Mientras esto suceda se har\'a uso del m\'etodo \code{out.synchronizedOrange( )} (Con su funcionamiento ya explicado previamente) en donde el primer bloque de la funci\'on se evaluar\'a si la cola de mensajes naranjas del buffer de salida est\'a llena, de ser as\'i se ejecuta la instrucci\'on \code{yield} hasta que la cola de mensajes naranjas no est\'e llena.
+    En el segundo bloque de la funci\'on, cuando esta cola ya no est\'a llena, se crea el mensaje, se agrega a la cola y luego se aumenta el contador de mensajes creados en uno.
 
-        Por último se tiene la función “runZero( )” en donde se crea un lamda expresion u objeto anónimo llamado “context” el cual tiene un atributo llamado “counter” que cuenta la cantidad de productos/mensajes creados. Luego de esto se ejecuta un ciclo mientras el número de mensajes creados sea menor al número de mensajes a crear. Mientras esto suceda se hará uso de la función “out.synchronizedOrange( )” (su funcionamiento ya se explicó anteriormente) en donde el primer bloque de la función se evaluará si la cola de mensajes naranjas del buffer de salida está llena, de ser así se ejecuta la instrucción “Thread.yield( )” haciendo que el proceso ceda el procesador y lo vuelva a solicitar inmediatamente hasta que la cola de mensajes naranjas no esté llena. En el segundo bloque de la función, cuando esta cola ya no está llena, se crea el mensaje, se agrega a la cola y  luego se aumenta el contador de mensajes creados en uno. 
+    \subsubsection{Red}
+    En la parte inicial del c\'odigo se puede ver la definici\'on de los atributos de la clase Red, y los m\'etodos para darle valor a estos atributos.
+    Adicionalmente, se puede la inicializaci\'on del m\'etodo \code{run( )} y dentro \'el la creaci\'on de variables de control como \code{msg} el cual es un arreglo de tama\~no igual al n\'umero total de mensajes creados.
+    Tambi\'en se crean las variables \code{sentinelO} y \code{sentinelB} las cuales aseguran que no se lean m\'as de \code{msgLimit} mensajes provenientes de procesos naranjas y azules correspondientemente.\\
 
-        \subsubsection{Red}
+    Luego de esto se ejecuta dos ciclos los cuales ayudar\'an a obtener los mensajes y se ordenen por orden de creaci\'on para luego ser impreso, primero se ejecuta un ciclo para obtener y ubicar correctamente los mensajes naranjas y luego se ejecuta otro ciclo similar pero con los procesos azules.
+    Este primer ciclo se ejecutar\'a siempre y cuando exista al menos un proceso(el cual se sabe que es naranja debido al orden de creaci\'on de los mismo en el main) y mientras no se haya le\'ido la totalidad de mensajes naranjas limitada por el l\'imite de mensajes naranjas creados, se sincronizar\'a la cola de mensajes naranjas del buffer para que este recurso le pertenezca al proceso rojo mientras se cumplan las condiciones mencionadas; debido a esto, ning\'un otro recurso puede modificar esta cola y los datos que se est\'an leyendo en el momento son consistentes.
+    Luego de esto se ejecuta un while el cual se dar\'a mientras la cola de mensajes naranjas no est\'e vac\'ia.
+    Aqu\'i se evidencia la espera activa por parte del proceso rojo debido a que, si la cola est\'a vac\'ia, consultar\'a permanentemente (sin ceder el procesador) hasta que ya no lo est\'e para as\'i tomar un mensaje de esta, analizarlo y adicionarlo al arreglo de mensajes \code{msg} en el orden correspondiente a su id (Con ayuda de la funci\'on \code{between} la cual se explicar\'a m\'as adelante) y luego aumentar el counter de mensajes le\'idos para comprarlo con \code{msgLimit} y as\'i volver a evaluar \code{sentinelO}.\\
+    Al finalizar este ciclo, se habr\'an le\'ido todos los mensajes del buffer de mensajes naranjas que se encontraban disponibles en ese momento y se habr\'an almacenado en el arreglo de mensajes msg.
+    Esto mismo sucede en el siguiente ciclo dedicado a los procesos azules, pero en su lugar se verifica que la cantidad de procesos corriendo sea mayor a 1 (\code{process > 1}), en donde en ese caso se sabr\'a que al menos uno de los procesos corriendo es azul, y se ejecutan las mismas instrucciones mencionadas anteriormente.\\
+    Cabe a\~nadir que en ambos ciclos hay una l\'inea que crea un marco el cual delimita los mensajes modificados finales que mostrar\'an al usuario (Decisi\'on tomada con fines est\'eticos).\\
 
-
-        En la parte inicial del código se puede ver la definición de los atributos de la clase Red, y los métodos para darle valor a estos atributos. Adicionalmente se puede la inicialización del método run() y dentro él la creación de variables de control como “msg” el cual es un arreglo de tamaño igual al número total de mensajes creados. También se crean las variables “sentinelO” y “sentinelB” las cuales aseguran que no se lean más de “msgLimit” mensajes provenientes de procesos naranjas y azules correspondientemente. 
-
-        Luego de esto se ejecuta dos ciclos los cuales ayudarán a que los mensajes se impriman en orden de creación, primero se ejecuta un ciclo para ordenar los mensajes naranjas y luego se ejecuta otro ciclo que ordenará los mensajes azules. Este primer ciclo se ejecutará mientras no se hayan leído más mensajes naranjas que el número límite de mensajes naranjas creados y halla al menos un proceso en ejecución (el cual se sabe que es naranja debido al orden de creación de los mismo en el main), se sincronizará la cola de mensajes naranjas del buffer para que este recurso le pertenezca al proceso rojo mientras se cumplan las condiciones mencionadas; debido a esto, ningún otro recurso puede modificar  esta cola y los datos que se están leyendo en el momento son consistentes. Luego de esto se ejecuta un while el cual se dará mientras la cola de mensajes naranjas no esté vacía. Aquí se evidencia la espera activa por parte del proceso Rojo debido a que, si la cola está vacía, consultará permanentemente (sin ceder el procesador) hasta que ya no lo esté para así tomar un mensaje de esta,  modificarlo y adicionarlo al arreglo de mensajes “msg” en el orden correspondiente a su id (Con ayuda de la función “between” la cual se explicará más adelante) y luego aumentar el counter de mensajes leídos para comprarlo con “msgLimit” y así volver a evaluar “sentinelO”. 
-
-        Al finalizar este ciclo, se habrán leído todos los mensajes del buffer de mensajes naranjas que se encontraban disponibles en ese momento y se habrán almacenado en el arreglo de mensajes msg. 
-
-        Esto mismo sucede en este ciclo, pero ahora se verifica que la cantidad de procesos corriendo sea mayor a 1 (process > 1), en donde en ese caso se sabrá que al menos uno de los procesos corriendo es azul, y se ejecutan las mismas instrucciones mencionadas anteriormente. 
-
-        Esta línea crea un marco el cual delimita los mensajes modificados finales que mostrarán al usuario 
-
-        Por último, este método permite encontrar el id del mensaje que entra por parámetro, esto se hacer por medio del método substring para extraer una subcadena que comienza justo después del corchete de apertura y termina justo antes del corchete de cierre. Esta subcadena se convierte en un número entero utilizando el método parseInt y se devuelve como resultado. 
+    Por \'ultimo, el m\'etodo \code{between( String s )} permite encontrar el id del mensaje que entra por par\'ametro, esto se hacer por medio del m\'etodo substring para extraer una subcadena que comienza justo despu\'es del corchete de apertura y termina justo antes del corchete de cierre.
+    (Esto es permitido de acuerdo a la estructura escogida para las transformaciones y producciones de los diversos mensajes).
+    Esta subcadena se convierte en un n\'umero entero utilizando el m\'etodo \code{Integer.parseInt( String s )} y se devuelve como resultado.\\
 
     \subsection{Estructura de Input}
-    
+
     \subsection{Estructura de Prints}
-    Al ingresar correctamente los parámetros, el programa retornará una estructura de mensajes similar a esta, en donde el la “R” impresa al inicio significa que por medio del proceso rojo se imprimieron los mensajes. 
-    Párrafo bloqueado por Sofia Torres Ramirez
+    Al ingresar correctamente los par\'ametros, el programa retornar\'a una estructura de mensajes similar a esta, en donde la ``R'' impresa al inicio significa que por medio del proceso rojo se imprimieron los mensajes.\\
 
-    Ahora entendiendo las partes de cada mensaje: 
-
-    Las letras encerradas en círculos amarillos indican el color del proceso por el que pasó cada mensaje, si el proceso era azul, la letra representada en el mensaje será “B”. Si el proceso era naranja la letra representada en el mensaje será “O”. 
-
-    Las palabras señaladas en naranja con la estructura “ThreadX” siendo X un número, representan el id del proceso porque el que pasó el mensaje. 
-
-    Los números entre llaves encerrados en círculos verdes representan el id de cada mensaje. Como se puede ver, los mensajes se imprimen conforme al orden que dan estos ids. 
-
-    Los números encerrados en rosado representan en qué etapa del proceso se realizó cada modificación. 
-
-    Los números entre paréntesis señalados en azul representan el número de mensajes que había procesado cada proceso hasta ese momento. 
-
-    Teniendo en cuenta esto, se puede ver que el mensaje generado cuando se crea el proceso es más específico que los que se generan en las etapas posteriores, sin embargo, tienen la misma estructura. 
-
- 
+    Ahora entendiendo las partes de cada mensaje:
+    \begin{itemize}
+        \item[] Las letras encerradas en c\'irculos amarillos indican el color del proceso por el que pas\'o cada mensaje, si el proceso era azul, la letra representada en el mensaje ser\'a ``B''.\\
+        Si el proceso era naranja la letra representada pasa a ser la ``O''.
+        \item[] Las palabras se\~naladas en naranja con la estructura ``Thread\#'' siendo \# un n\'umero, representando el id del proceso porque el que pas\'o el mensaje.
+        \item[] Los n\'umeros entre llaves encerrados en c\'irculos verdes representan el id de cada mensaje.\\
+        Como se puede ver, los mensajes se imprimen conforme al orden otorgado por estos ids.
+        \item[] Los n\'umeros encerrados en rosado representan en qu\'e etapa del proceso se realiz\'o cada modificaci\'on.
+        \item[] Los n\'umeros entre par\'entesis se\~nalados en azul representan el n\'umero de mensajes que hab\'ia procesado cada proceso hasta ese momento.
+    \end{itemize}
+    Teniendo en cuenta esto, se puede ver que el mensaje generado cuando se crea el proceso es m\'as espec\'ifico que los que se generan en las etapas posteriores, sin embargo, tienen una estructura que sigue otorgando gran informaci\'on.
 
     %------------------------------------------------
 
-\section{Pruebas del programa}
 
-\subsection{Estructura y requerimientos de prueba.}
-Este programa fue probado en el IDE integrado IntelliJ IDEA 2022.3.2, con
-el JDK Java 11 y en la consola integrada del IDE. Fue probado en Windows 10 
-2H22 y Manjaro Linux 22.10, la estructura del proyecto esta planteada con el
-sistema de Build 'Maven' y es dependiente principalmente de las librerías estandar
-de Java. Sin embargo, para conseguir los prints con símbolos integrados, la fuente
-de la consola en la cuál se compile debe ser compatible con simbolos Unicode,
-de lo contrario, solo será mostrado el código Unicode referente a los símbolos.
+    \section{Pruebas del programa}
 
-\subsection{Pruebas}
-\subsubsection{10-10-10}
-\includegraphics{10-10-10.PNG}
+    \subsection{Estructura y requerimientos de prueba}
+    Este programa fue probado en el IDE integrado IntelliJ IDEA 2022.3.2, con el JDK Java 11 y en la consola integrada del IDE.
+    Fue probado en Windows 10 2H22 y Manjaro Linux 22.10, la estructura del proyecto est\'a planteada con el sistema de Build dbl Java puro y es independiente librer\'ias externas.
+    Sin embargo, para conseguir los prints con s\'imbolos integrados, la fuente de la consola en la cu\'al se compile debe ser compatible con simbolos Unicode,
+    de lo contrario, solo ser\'a mostrado el c\'odigo Unicode referente a los s\'imbolos.
+    Finalmente, solo es una decisi\'on est\'etica.
 
-\subsubsection{3-3-3}
-\includegraphics{3-3-3.PNG}
+    \subsection{Pruebas}
 
-\subsubsection{5-5-5}
-\includegraphics{5-5-5.PNG}
+    \subsubsection{10-10-10}
+    \includegraphics{10-10-10.PNG}
 
-\section{Glosario}
-\paragraph{Función Lambda}
+    \subsubsection{3-3-3}
+    \includegraphics{3-3-3.PNG}
 
-\paragraph{Objeto anónimo}
+    \subsubsection{5-5-5}
+    \includegraphics{5-5-5.PNG}
 
+
+    \section{Glosario}
+
+    \paragraph{Funci\'on Lambda}
+    Es una funci\'on an\'onima, es decir, no depende de alguna clase.
+    Similar a los m\'etodos toman parametros y retornan alg\'un valor, pero a diferencia de los primeros, estas no necesitan un nombre.
+    \paragraph{Objeto an\'onimo}
+    Es un objeto que no pertenece realmente a alguna clase, similar a las estructuras en C.
+    Como dicho objeto no hace referencia a alguna clase ya declarada, no referencia a alg\'un archivo .java y es principalmente usado para interactuar con bloques de expresiones lambda y si realmente no se considera valioso crear una clase para esta instancia.
 
 %------------------------------------------------
 \end{document}

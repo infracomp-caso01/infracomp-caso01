@@ -45,10 +45,10 @@ interface Process extends Runnable {}
 }
 
 class SecureId {
-    private static int threadSed = 0;
+    private static int threadSeq = 0;
     private static int productSeq = 0;
 
-    static synchronized int nextTID() {return threadSed++;}
+    static synchronized int nextTID() {return threadSeq++;}
 
     static synchronized int nextPID() {return productSeq++;}
 }
